@@ -31,6 +31,10 @@ const map = new mapboxgl.Map({
   * Populate the list of attractions
   */
 
+// api.fetchItineraries().then(itinerary => {
+//   console.log(itinerary);
+// })
+
 api.fetchAttractions().then(attractions => {
   state.attractions = attractions;
   const { hotels, restaurants, activities } = attractions;
@@ -110,7 +114,7 @@ const buildAttractionAssets = (category, attraction) => {
     itineraryItem.remove();
     marker.remove();
 
-    console.log(state);
+    // console.log(state);
 
     // Animate map to default position & zoom.
     map.flyTo({ center: [-74.0, 40.731], zoom: 12.3 });

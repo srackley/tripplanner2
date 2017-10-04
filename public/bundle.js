@@ -551,12 +551,14 @@ const state = {
   * Instantiate the Map
   */
 
-mapboxgl.accessToken =
-  "pk.eyJ1IjoiY2Fzc2lvemVuIiwiYSI6ImNqNjZydGl5dDJmOWUzM3A4dGQyNnN1ZnAifQ.0ZIRDup0jnyUFVzUa_5d1g";
+mapboxgl.accessToken = "YOUR API TOKEN HERE";
+
+const fullstackCoords = [-74.009, 40.705] // NY
+// const fullstackCoords = [-87.6320523, 41.8881084] // CHI
 
 const map = new mapboxgl.Map({
   container: "map",
-  center: [-74.009, 40.705], // FullStack coordinates
+  center: fullstackCoords,
   zoom: 12, // starting zoom
   style: "mapbox://styles/mapbox/streets-v10" // mapbox has lots of different map styles available.
 });
@@ -564,6 +566,10 @@ const map = new mapboxgl.Map({
 /*
   * Populate the list of attractions
   */
+
+// api.fetchItineraries().then(itinerary => {
+//   console.log(itinerary);
+// })
 
 api.fetchAttractions().then(attractions => {
   state.attractions = attractions;
@@ -644,7 +650,7 @@ const buildAttractionAssets = (category, attraction) => {
     itineraryItem.remove();
     marker.remove();
 
-    console.log(state);
+    // console.log(state);
 
     // Animate map to default position & zoom.
     map.flyTo({ center: [-74.0, 40.731], zoom: 12.3 });
@@ -683,13 +689,23 @@ module.exports = g;
 /* 3 */
 /***/ (function(module, exports) {
 
+const hash = location.hash;
+
 const fetchAttractions = () =>
-  fetch("/api")
+  fetch('/api')
     .then(result => result.json())
-    .catch(console.error);
+    .catch(err => console.error(err));
+
+const fetchItineraries = () =>
+  fetch(`/api/itineraries/${hash}`)
+    .then(result => {
+      console.log('result', result);
+      console.log('hash', hash);
+    })
+    .catch(err => console.error(err));
 
 module.exports = {
-  fetchAttractions
+  fetchAttractions, fetchItineraries
 };
 
 
