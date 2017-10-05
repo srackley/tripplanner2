@@ -9,9 +9,9 @@ const Itinerary = require('./itinerary');
 Hotel.belongsTo(Place);
 Restaurant.belongsTo(Place);
 Activity.belongsTo(Place);
-Hotel.belongsToMany(Itinerary, {through: 'hotel_itinerary'});
-Restaurant.belongsToMany(Itinerary, {through: 'restaurant_itinerary'});
-Activity.belongsToMany(Itinerary, {through: 'activity_itinerary'});
+Itinerary.belongsToMany(Hotel, {through: 'hotel_itinerary'});
+Itinerary.belongsToMany(Restaurant, {through: 'restaurant_itinerary'});
+Itinerary.belongsToMany(Activity, {through: 'activity_itinerary'});
 
 module.exports = {
   db,

@@ -15,7 +15,7 @@ const state = {
   * Instantiate the Map
   */
 
-mapboxgl.accessToken = "YOUR API TOKEN HERE";
+mapboxgl.accessToken = "pk.eyJ1IjoiYXJpYW5uYWxhbnoiLCJhIjoiY2o4YnEzaW40MDBuMDJ6cDdhbTZuMm9yMCJ9.YNhR6HanR-EpwAN05yKbbw";
 
 const fullstackCoords = [-74.009, 40.705] // NY
 // const fullstackCoords = [-87.6320523, 41.8881084] // CHI
@@ -31,10 +31,6 @@ const map = new mapboxgl.Map({
   * Populate the list of attractions
   */
 
-// api.fetchItineraries().then(itinerary => {
-//   console.log(itinerary);
-// })
-
 api.fetchAttractions().then(attractions => {
   state.attractions = attractions;
   const { hotels, restaurants, activities } = attractions;
@@ -49,6 +45,17 @@ const makeOption = (attraction, selector) => {
   select.add(option);
 };
 
+api.fetchItineraries().then(itineraries => {
+  state.itineraries = itineraries;
+  const { hotels, restaurants, activities } = itineraries;
+  itineraries.hotels.forEach(hotel => buildAttractionAssets('hotels', hotel));
+  itineraries.restaurants.forEach(restaurant => buildAttractionAssets('restaurants', restaurant));
+  itineraries.activities.forEach(activity => buildAttractionAssets('activities', activity));
+  });
+
+  document.getElementById('saveItinerary').onclick = ()=>{
+    api.createItinerary(state.selectedAttractions);
+  }
 /*
   * Attach Event Listeners
   */
