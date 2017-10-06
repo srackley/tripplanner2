@@ -12,8 +12,8 @@ const state = {
 };
 
 /*
-  * Instantiate the Map
-  */
+ * Instantiate the Map
+ */
 
 mapboxgl.accessToken = "pk.eyJ1IjoiYXJpYW5uYWxhbnoiLCJhIjoiY2o4YnEzaW40MDBuMDJ6cDdhbTZuMm9yMCJ9.YNhR6HanR-EpwAN05yKbbw";
 
@@ -28,12 +28,16 @@ const map = new mapboxgl.Map({
 });
 
 /*
-  * Populate the list of attractions
-  */
+ * Populate the list of attractions
+ */
 
 api.fetchAttractions().then(attractions => {
   state.attractions = attractions;
-  const { hotels, restaurants, activities } = attractions;
+  const {
+    hotels,
+    restaurants,
+    activities
+  } = attractions;
   hotels.forEach(hotel => makeOption(hotel, "hotels-choices"));
   restaurants.forEach(restaurant => makeOption(restaurant, "restaurants-choices"));
   activities.forEach(activity => makeOption(activity, "activities-choices"));
@@ -47,18 +51,22 @@ const makeOption = (attraction, selector) => {
 
 api.fetchItineraries().then(itineraries => {
   state.itineraries = itineraries;
-  const { hotels, restaurants, activities } = itineraries;
+  const {
+    hotels,
+    restaurants,
+    activities
+  } = itineraries;
   itineraries.hotels.forEach(hotel => buildAttractionAssets('hotels', hotel));
   itineraries.restaurants.forEach(restaurant => buildAttractionAssets('restaurants', restaurant));
   itineraries.activities.forEach(activity => buildAttractionAssets('activities', activity));
-  });
+});
 
-  document.getElementById('saveItinerary').onclick = ()=>{
-    api.createItinerary(state.selectedAttractions);
-  }
+document.getElementById('saveItinerary').onclick = () => {
+  api.createItinerary(state.selectedAttractions);
+}
 /*
-  * Attach Event Listeners
-  */
+ * Attach Event Listeners
+ */
 
 // what to do when the `+` button next to a `select` is clicked
 ["hotels", "restaurants", "activities"].forEach(attractionType => {
@@ -99,14 +107,20 @@ const buildAttractionAssets = (category, attraction) => {
   const marker = buildMarker(category, attraction.place.location);
 
   // Adds the attraction to the application state
-  state.selectedAttractions.push({ id: attraction.id, category });
+  state.selectedAttractions.push({
+    id: attraction.id,
+    category
+  });
 
   //ADD TO DOM
   document.getElementById(`${category}-list`).append(itineraryItem);
   marker.addTo(map);
 
   // Animate the map
-  map.flyTo({ center: attraction.place.location, zoom: 15 });
+  map.flyTo({
+    center: attraction.place.location,
+    zoom: 15
+  });
 
   removeButton.addEventListener("click", function remove() {
     // Stop listening for the event
@@ -124,6 +138,9 @@ const buildAttractionAssets = (category, attraction) => {
     // console.log(state);
 
     // Animate map to default position & zoom.
-    map.flyTo({ center: [-74.0, 40.731], zoom: 12.3 });
+    map.flyTo({
+      center: [-74.0, 40.731],
+      zoom: 12.3
+    });
   });
 };
